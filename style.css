@@ -1,0 +1,72 @@
+body {
+    font-family: terminal, monaco, monospace;    
+    padding: 16px;
+    margin: 0;
+}
+
+textarea {
+    width: 90vw;
+    height: 32vh;
+    font-size: 16pt;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    padding: 16px;
+}
+select, button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #df8947;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: terminal, monaco, monospace;    
+    font-size: 16pt;
+}
+button {
+    background-color: #df8947;
+    color: white;
+}
+#output {
+    width: 90vw;
+    font-size: 16pt;
+    margin-top: 32px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    padding: 16px;
+}
+.upper {
+    width: 48vw;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    color: #333;
+}
+.logoText {
+    font-size: 32pt;
+    width: 16vw;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.descText {
+    font-size: 16pt;
+    width: 32vw;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+.buttonDiv {
+    display: flex;
+    width: 36vw;
+    justify-content: space-between;
+}
+.outputText {
+    font-size: 16pt;
+    color: #40826D;
+}
