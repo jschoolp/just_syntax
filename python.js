@@ -120,7 +120,7 @@ function generateHighlightedCode() {
             const applyMargin = index === 0 ? marginLeft : 0;
             
             if (token.startsWith("#")) {
-                return wrapInSpan(token, "#40826D"); // колір коментарів
+                return wrapInSpan(token, "#87a69c"); // колір коментарів
             }
 
             return highlightToken(token, applyMargin);
