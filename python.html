@@ -98,10 +98,8 @@
             tempTextarea.select();
             try {
                 document.execCommand("copy");
-                alert("Код з підсвіткою синтаксису скопійовано в буфер обміну!");
             } catch (err) {
                 console.error("Помилка копіювання: ", err);
-                alert("Не вдалося скопіювати код.");
             }
             document.body.removeChild(tempTextarea);
         }

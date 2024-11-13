@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Syntax Highlighter with CodeMirror</title>
 
-    <!-- Підключення стилів CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
 
-    <!-- Підключення основного скрипта CodeMirror -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-    <!-- Підключення модуля для JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -30,22 +27,21 @@
 
     <script>
         const styleMap = {
-            'cm-keyword': 'color: #A626A4;', // Ключові слова
-            'cm-variable': 'color: #e45649;', // Змінні
-            'cm-string': 'color: #50A14F;', // Рядки
-            'cm-number': 'color: #986801;', // Числа
-            'cm-comment': 'color: #A0A1A7;', // Коментарі
-            'cm-def': 'color: #4078F3;', // Функції та методи
-            'cm-atom': 'color: #986801;', // Атоми
-            'cm-operator': 'color: #000;', // Оператори
-            'cm-punctuation': 'color: #000;', // Розділові знаки
-            'cm-variable-2': 'color: #407AF3', // Для властивостей
-            'cm-property': 'color: #407AF3;', // Властивості
-            'cm-string-2': 'color: #50A14F;', // Якщо додатковий клас string-2
+            'cm-keyword': 'color: #A626A4;',
+            'cm-variable': 'color: #e45649;',
+            'cm-string': 'color: #50A14F;',
+            'cm-number': 'color: #986801;',
+            'cm-comment': 'color: #A0A1A7;',
+            'cm-def': 'color: #4078F3;',
+            'cm-atom': 'color: #986801;',
+            'cm-operator': 'color: #000;',
+            'cm-punctuation': 'color: #000;',
+            'cm-variable-2': 'color: #407AF3', 
+            'cm-property': 'color: #407AF3;', 
+            'cm-string-2': 'color: #50A14F;', 
             'default': 'font-family: terminal, monaco, monospace; font-size: 20px; line-height: 1.4; color: #000000;' // Стандартний стиль
         };
 
-        // Функція для застосування інлайн стилів
         function applyInlineStylesToElements(elements) {
             elements.forEach((element) => {
                 const className = element.classList[0];
@@ -57,7 +53,6 @@
         function highlightCode() {
             const code = document.getElementById("codeInput").value;
 
-            // Ініціалізація прихованого CodeMirror редактора
             const tempTextarea = document.createElement("textarea");
             tempTextarea.value = code;
             document.body.appendChild(tempTextarea);
@@ -74,20 +69,16 @@
                     '.cm-keyword, .cm-variable, .cm-string, .cm-number, .cm-comment, .cm-def, .cm-atom, .cm-operator, .cm-punctuation, .cm-variable-2, .cm-property, .cm-string-2'
                 );
                 
-                // Додаємо стилі для всіх елементів
                 applyInlineStylesToElements(elements);
 
-                // Додаємо загальний стиль для всіх <pre>
                 const preElements = tempEditor.getWrapperElement().querySelectorAll("pre");
                 preElements.forEach(pre => {
                     pre.setAttribute("style", `${styleMap['default']} max-width: 750px; white-space: pre-wrap; word-wrap: break-word;`);
                 });
 
-                // Отримуємо HTML з підсвітленням і вставляємо в output
                 const highlightedHTML = tempEditor.getWrapperElement().querySelector(".CodeMirror-code").innerHTML;
                 document.getElementById("output").innerHTML = `<div style="width: 750px;">${highlightedHTML}</div>`;
 
-                // Видаляємо тимчасовий редактор
                 tempEditor.toTextArea();
                 document.body.removeChild(tempTextarea);
             }, 100);
@@ -107,10 +98,8 @@
             tempTextarea.select();
             try {
                 document.execCommand("copy");
-                alert("Код з підсвіткою синтаксису скопійовано в буфер обміну!");
             } catch (err) {
                 console.error("Помилка копіювання: ", err);
-                alert("Не вдалося скопіювати код.");
             }
             document.body.removeChild(tempTextarea);
         }
