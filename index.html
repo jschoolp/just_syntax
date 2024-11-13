@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Just Syntax</title>
+    <title>Just Syntax | Підсвічування синтаксису </title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="upper">
-        <p class="logoText">Just Syntax</p>
-        <p class="descText"># тестова версія, працює лише для Python. для того, щоб зробити табуляцію - в input необхідно вручну натискати tab</p>
-    </div>
-    <textarea id="codeInput" rows="10" cols="50" placeholder="Введіть код" onkeydown="replaceTab(event)"></textarea>
-    
-    <div class="buttonDiv">
-        <select id="languageSelect" onchange="loadSyntaxHighlighter()">
-            <option value="python">Python</option>
-            <option value="lua">Lua</option>
-            <option value="javascript">JavaScript</option>
-            <option value="css">CSS</option>
-            <option value="html">HTML</option>
-        </select>
-        
-        <button onclick="generateHighlightedCode()">Згенерувати код</button>
-        <button onclick="copyHTMLCode()">Скопіювати HTML</button>
+<body onload="setActiveButton('python')">
+    <div id="buttonsDIV">
+        <button id="python" onclick="loadIframe('python.html', 'python')">Python</button>
+        <button id="lua" onclick="loadIframe('lua.html', 'lua')">Lua</button>
+        <button id="html" onclick="loadIframe('html.html', 'html')">HTML</button>
+        <button id="css" onclick="loadIframe('css.html', 'css')">CSS</button>
+        <button id="js" onclick="loadIframe('javascript.html', 'js')">JS</button>
     </div>
 
-    <div id="output">
-        <p class="outputText"># тут буде гарний код із підсвіченим синтаксисом</p>
-    </div>
+    <iframe id="contentFrame" width="100%" height="500px" src="python.html"></iframe>
 
-    <script src="common.js"></script>
-    <script src="python.js" id="syntaxHighlighter"></script>
+    <script>
+        function loadIframe(file, buttonId) {
+            const iframe = document.getElementById('contentFrame');
+            iframe.src = file;
+            setActiveButton(buttonId);
+        }
+
+        function setActiveButton(buttonId) {
+            const buttons = document.querySelectorAll('#buttonsDIV button');
+            buttons.forEach(button => {
+                if (button.id === buttonId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

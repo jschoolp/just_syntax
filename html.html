@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Syntax Highlighter with CodeMirror</title>
+
+    <!-- Підключення стилів CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+
+    <!-- Підключення основного скрипта CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <!-- Підключення модуля для HTML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="console-div">
+        <p class="text-description">Обрана мова: HTML</p>
+        <textarea id="codeInput" rows="24" cols="50" placeholder="Введіть HTML код тут..."></textarea>
+        <br>
+        <div class="mini-buttons-div">
+            <button onclick="highlightCode()">Підсвітити</button>
+            <button onclick="copyToClipboard()">Скопіювати HTML</button>
+        </div>        
+    
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const styleMap = {
+            'cm-tag': 'color: #E45B49;',          // Теги
+            'cm-attribute': 'color: #D19A7E;',    // Атрибути
+            'cm-attributeValue': 'color: #986801;', // Значення атрибутів
+            'cm-comment': 'color: #A0A1A7;',      // Коментарі
+            'cm-keyword': 'color: #A626A4;',       // Ключові слова
+            'cm-meta': 'color: #A626A4;',  
+            'cm-string': 'color: #66A14F;', 
+            'default': 'font-family: terminal, monaco, monospace; font-size: 20px; line-height: 1.4; color: #000000;' // Загальний стиль
+        };
+
+        // Функція для застосування інлайн стилів
+        function applyInlineStylesToElements(elements) {
+            elements.forEach((element) => {
+                const className = element.classList[0];
+                const style = styleMap[className] || styleMap['default'];
+                element.setAttribute('style', `${styleMap['default']} ${style}`);
+            });
+        }
+
+        function highlightCode() {
+            const code = document.getElementById("codeInput").value;
+
+            // Ініціалізація прихованого CodeMirror редактора
+            const tempTextarea = document.createElement("textarea");
+            tempTextarea.value = code;
+            document.body.appendChild(tempTextarea);
+
+            const tempEditor = CodeMirror.fromTextArea(tempTextarea, {
+                mode: "xml",  // Використовуємо XML для HTML (HTML є підмножиною XML в CodeMirror)
+                lineNumbers: false,
+                readOnly: true,
+                viewportMargin: Infinity
+            });
+
+            setTimeout(() => {
+                const elements = tempEditor.getWrapperElement().querySelectorAll(
+                    '.cm-tag, .cm-attribute, .cm-attributeValue, .cm-comment, .cm-keyword, .cm-meta, .cm-string'
+                );
+                
+                // Додаємо стилі для всіх елементів
+                applyInlineStylesToElements(elements);
+
+                // Додаємо загальний стиль для всіх <pre>
+                const preElements = tempEditor.getWrapperElement().querySelectorAll("pre");
+                preElements.forEach(pre => {
+                    pre.setAttribute("style", `${styleMap['default']} max-width: 750px; white-space: pre-wrap; word-wrap: break-word;`);
+                });
+
+                // Отримуємо HTML з підсвіченням і вставляємо в output
+                const highlightedHTML = tempEditor.getWrapperElement().querySelector(".CodeMirror-code").innerHTML;
+                document.getElementById("output").innerHTML = `<div style="width: 750px;">${highlightedHTML}</div>`;
+
+                // Видаляємо тимчасовий редактор
+                tempEditor.toTextArea();
+                document.body.removeChild(tempTextarea);
+            }, 100);
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById("output");
+
+            const tempTextarea = document.createElement("textarea");
+            tempTextarea.style.position = "absolute";
+            tempTextarea.style.left = "-9999px";
+
+            tempTextarea.value = `<div style="width: 750px;">${output.innerHTML}</div>`;
+
+            document.body.appendChild(tempTextarea);
+
+            tempTextarea.select();
+            try {
+                document.execCommand("copy");
+                alert("Код з підсвіткою синтаксису скопійовано в буфер обміну!");
+            } catch (err) {
+                console.error("Помилка копіювання: ", err);
+                alert("Не вдалося скопіювати код.");
+            }
+            document.body.removeChild(tempTextarea);
+        }
+    </script>
+</body>
+</html>
